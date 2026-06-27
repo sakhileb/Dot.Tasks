@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="public/dot_tasks.png" alt="Dot.Tasks" width="280" />
+
 <h1>Dot.Tasks</h1>
 
 <p>AI-powered task management — break down complex tasks into subtasks with time estimates and manage them on a drag-and-drop kanban board.</p>
