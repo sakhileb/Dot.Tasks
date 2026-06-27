@@ -1,0 +1,56 @@
+<div>
+    @if($showForm)
+        <div class="fixed inset-0 bg-black/40 z-40" wire:click="cancel"></div>
+        <div class="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">New Task</h3>
+
+                <form wire:submit="save" class="space-y-4">
+                    <div>
+                        <input wire:model="title" type="text" placeholder="Task title" autofocus
+                               class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring-indigo-500">
+                        @error('title')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <textarea wire:model="description" rows="2" placeholder="Description (optional)"
+                              class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm text-sm"></textarea>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Priority</label>
+                            <select wire:model="priority"
+                                    class="w-full text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Due Date</label>
+                            <input wire:model="dueDate" type="date"
+                                   class="w-full text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Estimate (minutes)</label>
+                        <input wire:model="estimatedMinutes" type="number" min="1" placeholder="e.g. 30"
+                               class="w-full text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+
+                    <div class="flex gap-3 pt-1">
+                        <button type="button" wire:click="cancel"
+                                class="flex-1 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                                class="flex-1 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                            Create Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+</div>
