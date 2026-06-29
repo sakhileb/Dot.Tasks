@@ -1,84 +1,79 @@
 <div align="center">
 
-<img src="public/dot_tasks.png" alt="Dot.Tasks" width="280" />
+<img src="docs/logo.svg" alt="Dot.Tasks" width="320" />
 
-<h1>Dot.Tasks</h1>
+<br /><br />
 
-<p>AI-powered task management — break down complex tasks into subtasks with time estimates and manage them on a drag-and-drop kanban board.</p>
+**Break down complex work into subtasks with time estimates and track everything on kanban.**
 
-[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
-[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
-[![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=flat-square)](https://livewire.laravel.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Tests](https://img.shields.io/badge/tests-37%20passing-brightgreen?style=flat-square)](tests/)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+<br />
+
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=flat-square&logo=laravel&logoColor=white) ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=flat-square&logo=php&logoColor=white) ![Livewire](https://img.shields.io/badge/Livewire-3-FB70A9?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql&logoColor=white)
+
+<br /><br />
+
+**Part of the [InfoDot Ecosystem](https://github.com/sakhileb/InfoDot)** &nbsp;·&nbsp; `tasks.infodot.app`
 
 </div>
 
 ---
 
-## Overview
+## What is Dot.Tasks?
 
-Dot.Tasks is the task management platform in the Dot ecosystem. Organise work into task lists, break complex tasks into AI-generated subtasks with time estimates, and track everything on a 4-column kanban board with a slide-out task detail drawer.
+Dot.Tasks is the personal and team task management platform in the InfoDot ecosystem. AI decomposes complex goals into subtasks with time estimates; a flexible kanban board and list view let every team member manage their workload their way.
 
----
+## Core Features
 
-## Features
+- AI task decomposition — break any goal into actionable subtasks
+- Time estimates generated per subtask by AI
+- Drag-and-drop kanban with custom columns
+- List, board, and calendar views
+- Recurring tasks with configurable schedules
+- Labels, priorities, and due-date filtering
+- Pomodoro timer built in to task detail view
+- Ecosystem SSO from InfoDot hub
 
-- **AI Task Breakdown** — describe a task, Claude generates subtasks with time estimates
-- **4-column Kanban** — Todo → In Progress → Review → Done with drag-and-drop
-- **Subtasks** — self-referencing task hierarchy with unlimited nesting
-- **Task detail drawer** — slide-out panel for comments, labels, priority, due date
-- **Labels** — colour-coded tags for filtering and categorisation
-- **Task lists** — group tasks into named lists per team or project
-- **Ecosystem SSO** — authenticate from InfoDot with a single click
+## Domain Models
 
----
-
-## Domain Model
-
-```
-TaskList → Tasks (self-referencing parent/subtask via parent_id)
-        → Labels (many-to-many)
-        → TaskComments
-        → AiBreakdownLogs
-Team    → TaskLists
-```
-
----
+- **Task** — unit of work with status and priority
+- **SubTask** — decomposed step with estimate
+- **TaskLabel** — colour-coded category tag
+- **TaskComment** — discussion on a task
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Framework | Laravel 12 + PHP 8.4 |
-| Frontend | Livewire 3 + Alpine.js + Tailwind CSS |
-| Auth | Jetstream 5 + Sanctum (ecosystem SSO) |
-| Database | PostgreSQL 16 (shared infodot instance) |
-| AI | Anthropic Claude API (mock fallback when key absent) |
-| WebSockets | Laravel Reverb |
-
----
+| Framework | Laravel 12 |
+| Language | PHP 8.4 |
+| Frontend | Livewire 3 · Alpine.js 3 · Tailwind CSS |
+| Database | PostgreSQL 16 (shared across ecosystem) |
+| Realtime | Laravel Reverb |
+| Auth | Laravel Sanctum (InfoDot SSO) |
+| AI | Anthropic Claude (`claude-sonnet-4-6`) |
+| Storage | AWS S3 / Local (Flysystem) |
+| Search | Laravel Scout · Meilisearch |
+| Queue | Redis · Laravel Horizon |
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/sakhileb/Dot.Tasks.git && cd Dot.Tasks
-composer install && npm install
-cp .env.example .env && php artisan key:generate
-php artisan migrate && npm run dev & php artisan serve
+git clone https://github.com/sakhileb/Dot.Tasks.git
+cd Dot.Tasks
+cp .env.example .env
+composer install
+npm install && npm run build
+php artisan key:generate
+php artisan migrate
+php artisan serve
 ```
 
-```bash
-bash bin/test.sh   # 37 passing, 0 failed, 7 skipped
-```
+> **Ecosystem SSO:** Set `DB_*` env vars to the shared InfoDot PostgreSQL instance and `APP_URL=https://tasks.infodot.app`. Users authenticated through InfoDot gain access automatically via Sanctum handoff tokens.
 
----
+## Ecosystem
 
-## Part of the Dot Ecosystem
+**Dot.Tasks** is one of **21 platforms** in the InfoDot ecosystem, connected via shared PostgreSQL and Sanctum SSO. Visit [InfoDot](https://github.com/sakhileb/InfoDot) to explore the full platform map.
 
-Dot.Tasks connects to [InfoDot](https://github.com/sakhileb/InfoDot) — the central hub. Log in to InfoDot once and navigate here without re-authenticating via `/auth/ecosystem`.
+## License
 
----
-
-MIT — © SK Digital / BluPin Incorporated
+MIT © [SK Digital / BluPin Incorporated](https://github.com/sakhileb)
