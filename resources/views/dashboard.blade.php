@@ -1,43 +1,109 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Task Lists
-            </h2>
-            <a href="{{ route('task-lists.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
-                + New List
+    <div style="padding:2rem 2.5rem;">
+
+        <!-- Page header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;">
+            <div>
+                <h1 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#f4f4f5;margin:0 0 0.25rem;">Dashboard</h1>
+                <p style="font-size:0.8rem;color:#71717a;margin:0;">Manage your task lists and track progress</p>
+            </div>
+            <a href="{{ route('task-lists.create') }}" style="display:inline-flex;align-items:center;gap:0.5rem;border-radius:9999px;background:linear-gradient(135deg,#2962ff,#004ee8);padding:0.65rem 1.25rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:#f7f5ff;text-decoration:none;box-shadow:0 6px 18px rgba(41,98,255,0.3);">
+                <span class="material-symbols-rounded" style="font-size:18px;">add_circle</span>
+                New List
             </a>
         </div>
-    </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if($lists->isEmpty())
-                <div class="text-center py-20">
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">No task lists yet.</p>
-                    <a href="{{ route('task-lists.create') }}"
-                       class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700">
-                        Create your first list
-                    </a>
+        <!-- KPI row -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:2.5rem;">
+            <!-- Total Lists -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Total Lists</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(41,98,255,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#2962ff;">checklist</span>
+                    </div>
                 </div>
-            @else
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($lists as $list)
-                        <a href="{{ route('task-lists.show', $list) }}"
-                           class="block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3 mb-3">
-                                <div class="w-3 h-3 rounded-full" style="background-color: {{ $list->color }}"></div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white truncate">{{ $list->name }}</h3>
-                            </div>
-                            @if($list->description)
-                                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">{{ $list->description }}</p>
-                            @endif
-                            <p class="text-xs text-gray-400 dark:text-gray-500">{{ $list->tasks_count }} tasks</p>
-                        </a>
-                    @endforeach
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $lists->count() }}</div>
+            </div>
+
+            <!-- Total Tasks -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Total Tasks</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,58,237,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#7c3aed;">task_alt</span>
+                    </div>
                 </div>
-            @endif
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $lists->sum('tasks_count') }}</div>
+            </div>
+
+            <!-- In Progress -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">In Progress</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(217,119,6,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#d97706;">autorenew</span>
+                    </div>
+                </div>
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $taskCounts['in_progress'] }}</div>
+            </div>
+
+            <!-- Completed -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Completed</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(5,150,105,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#059669;">check_circle</span>
+                    </div>
+                </div>
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $taskCounts['done'] }}</div>
+            </div>
         </div>
+
+        <!-- Lists section heading -->
+        <div style="margin-bottom:1.25rem;">
+            <h2 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#a1a1aa;margin:0;">Your Lists</h2>
+        </div>
+
+        @if($lists->isEmpty())
+            <!-- Empty state -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:4rem 2rem;text-align:center;">
+                <div style="width:56px;height:56px;border-radius:14px;background:rgba(41,98,255,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+                    <span class="material-symbols-rounded" style="font-size:28px;color:#2962ff;">format_list_bulleted_add</span>
+                </div>
+                <p style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#f4f4f5;margin:0 0 0.5rem;">No task lists yet</p>
+                <p style="font-size:0.8rem;color:#71717a;margin:0 0 1.5rem;">Create your first list to start organising tasks.</p>
+                <a href="{{ route('task-lists.create') }}" style="display:inline-flex;align-items:center;gap:0.5rem;border-radius:9999px;background:linear-gradient(135deg,#2962ff,#004ee8);padding:0.65rem 1.4rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:#f7f5ff;text-decoration:none;">
+                    <span class="material-symbols-rounded" style="font-size:16px;">add_circle</span>
+                    Create your first list
+                </a>
+            </div>
+        @else
+            <!-- Lists grid -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+                @foreach($lists as $list)
+                <a href="{{ route('task-lists.show', $list) }}" style="display:block;background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;text-decoration:none;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor='rgba(41,98,255,0.4)';this.style.boxShadow='0 0 0 1px rgba(41,98,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)';this.style.boxShadow='none'">
+                    <!-- Color bar at top -->
+                    <div style="height:3px;border-radius:9999px;background:{{ $list->color ?? '#2962ff' }};margin-bottom:1.25rem;"></div>
+
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.5rem;">
+                        <h3 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:#f4f4f5;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $list->name }}</h3>
+                        <div style="width:10px;height:10px;border-radius:9999px;background:{{ $list->color ?? '#2962ff' }};flex-shrink:0;margin-top:4px;"></div>
+                    </div>
+
+                    @if($list->description)
+                    <p style="font-size:0.78rem;color:#71717a;margin:0 0 1rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $list->description }}</p>
+                    @else
+                    <div style="margin-bottom:1rem;"></div>
+                    @endif
+
+                    <div style="display:flex;align-items:center;gap:0.4rem;">
+                        <span class="material-symbols-rounded" style="font-size:14px;color:#71717a;">task_alt</span>
+                        <span style="font-size:0.72rem;color:#71717a;font-weight:600;">{{ $list->tasks_count }} {{ Str::plural('task', $list->tasks_count) }}</span>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        @endif
     </div>
 </x-app-layout>
