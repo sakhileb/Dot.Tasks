@@ -34,6 +34,8 @@ class CreateTask extends Component
 
     public function mount(TaskList $taskList): void
     {
+        $this->authorize('view', $taskList);
+
         $this->taskList = $taskList;
     }
 

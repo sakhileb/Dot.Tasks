@@ -1,6 +1,6 @@
 ---
 title: Dot.Tasks — Platform Knowledge
-version: 0.2.0
+version: 0.2.1
 status: active
 owners: [Tasks Platform Lead]
 platform-id: dot-tasks
@@ -118,6 +118,7 @@ Key environment variables (`.env.example`): standard Laravel/Postgres/mail setti
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.2.0 | 2026-08-01 | Tasks Platform Lead | Initial wiki: derived from the actual Laravel/Livewire codebase (kanban, AI breakdown, ecosystem SSO), cross-referenced against Dot.Brain's platforms/dot-tasks.md for ecosystem framing, gaps between shipped code and the routine/queue model called out explicitly |
+| 0.2.1 | 2026-08-01 | Engineering pass | Platform-loop quality pass: closed a cross-tenant authorization gap in `TaskDetail` (any authenticated user could open/comment/AI-breakdown any team's task via the `open-task` Livewire event with no ownership check — now enforced by new `TaskPolicy`/`TaskListPolicy`); added task assignment with a server-side team-membership check (mirrors Dot.Projects' `assignTask` fix) plus in-app notifications (`database` channel) for task-assigned, new-comment, and due-soon events; added board search, due-today/overdue/completed-this-week dashboard KPIs, and a dark/light theme toggle; replaced the placeholder Jetstream logo with the real Dot.Tasks mark across favicons, nav, and auth pages; removed a broken duplicate kanban render in `task-lists/show.blade.php` that `@include`d a non-existent partial; added Feature test coverage (auth, assignment, notifications, due-soon command, search, AI breakdown) — see repo commit for full diff |
 
 ## Open Questions
 

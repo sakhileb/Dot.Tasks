@@ -24,21 +24,24 @@ Dot.Tasks is the personal and team task management platform in the InfoDot ecosy
 
 ## Core Features
 
-- AI task decomposition — break any goal into actionable subtasks
-- Time estimates generated per subtask by AI
-- Drag-and-drop kanban with custom columns
-- List, board, and calendar views
-- Recurring tasks with configurable schedules
-- Labels, priorities, and due-date filtering
-- Pomodoro timer built in to task detail view
+- AI task decomposition — break any goal into actionable subtasks, with time estimates per subtask (falls back to a fixed mock breakdown when `ANTHROPIC_API_KEY` is unset)
+- Drag-and-drop kanban board with search/filter by title or description
+- Task assignment, scoped server-side to the task's team
+- In-app notification bell (task assigned, new comment, task due soon) backed by Laravel's `database` notification channel
+- Labels, priorities, and due dates
+- Dashboard KPIs: total lists/tasks, in progress, completed, due today, overdue, completed this week
+- Class-based dark/light theme toggle
 - Ecosystem SSO from InfoDot hub
+
+> Recurring tasks/schedules, calendar view, and a built-in Pomodoro timer are **not implemented** — see `wiki.md` §8 for the full gap list against the original aspirational feature set.
 
 ## Domain Models
 
-- **Task** — unit of work with status and priority
-- **SubTask** — decomposed step with estimate
-- **TaskLabel** — colour-coded category tag
+- **TaskList** — a board; owns many tasks
+- **Task** — unit of work with status, priority, optional assignee and due date; subtasks are just tasks with a `parent_id`
+- **Label** — colour-coded category tag, many-to-many with tasks
 - **TaskComment** — discussion on a task
+- **AiBreakdownLog** — prompt/response audit trail for each AI decomposition call
 
 ## Tech Stack
 

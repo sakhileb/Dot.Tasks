@@ -14,7 +14,7 @@
         </div>
 
         <!-- KPI row -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:2.5rem;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.25rem;">
             <!-- Total Lists -->
             <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
@@ -57,6 +57,42 @@
                     </div>
                 </div>
                 <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $taskCounts['done'] }}</div>
+            </div>
+        </div>
+
+        <!-- Secondary KPI row: due-date awareness -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2.5rem;">
+            <!-- Due Today -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Due Today</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#3b82f6;">today</span>
+                    </div>
+                </div>
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $taskCounts['due_today'] }}</div>
+            </div>
+
+            <!-- Overdue -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Overdue</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#ef4444;">error</span>
+                    </div>
+                </div>
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:{{ $taskCounts['overdue'] > 0 ? '#ef4444' : '#f4f4f5' }};">{{ $taskCounts['overdue'] }}</div>
+            </div>
+
+            <!-- Completed This Week -->
+            <div style="background:rgba(20,20,22,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:1rem;padding:1.5rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                    <span style="font-size:0.7rem;font-weight:700;color:#71717a;text-transform:uppercase;letter-spacing:0.12em;">Completed This Week</span>
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;">
+                        <span class="material-symbols-rounded" style="font-size:16px;color:#22c55e;">celebration</span>
+                    </div>
+                </div>
+                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f4f4f5;">{{ $taskCounts['completed_week'] }}</div>
             </div>
         </div>
 

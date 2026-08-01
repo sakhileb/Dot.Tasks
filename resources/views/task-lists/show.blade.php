@@ -16,95 +16,17 @@
             </div>
         </div>
 
-        <!-- Kanban board -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;align-items:start;">
-
-            <!-- Todo -->
-            <div style="background:rgba(19,27,46,0.9);border:1px solid rgba(67,70,86,0.25);border-radius:1rem;overflow:hidden;">
-                <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(67,70,86,0.2);display:flex;align-items:center;gap:0.6rem;">
-                    <div style="width:8px;height:8px;border-radius:9999px;background:#8d90a2;"></div>
-                    <span style="font-family:'Manrope',sans-serif;font-size:0.78rem;font-weight:700;color:#b7c8e1;text-transform:uppercase;letter-spacing:0.1em;">Todo</span>
-                    <span style="margin-left:auto;font-size:0.7rem;color:#8d90a2;background:rgba(67,70,86,0.3);border-radius:9999px;padding:0.1rem 0.5rem;">
-                        {{ $taskList->tasks->where('status','todo')->count() }}
-                    </span>
-                </div>
-                <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.6rem;min-height:120px;">
-                    @forelse($taskList->tasks->where('status','todo') as $task)
-                        @include('task-lists._task-card', ['task' => $task])
-                    @empty
-                        <div style="padding:1.5rem 0;text-align:center;">
-                            <span style="font-size:0.75rem;color:rgba(141,144,162,0.5);">No tasks here</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- In Progress -->
-            <div style="background:rgba(19,27,46,0.9);border:1px solid rgba(67,70,86,0.25);border-radius:1rem;overflow:hidden;">
-                <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(67,70,86,0.2);display:flex;align-items:center;gap:0.6rem;">
-                    <div style="width:8px;height:8px;border-radius:9999px;background:#d97706;"></div>
-                    <span style="font-family:'Manrope',sans-serif;font-size:0.78rem;font-weight:700;color:#b7c8e1;text-transform:uppercase;letter-spacing:0.1em;">In Progress</span>
-                    <span style="margin-left:auto;font-size:0.7rem;color:#8d90a2;background:rgba(67,70,86,0.3);border-radius:9999px;padding:0.1rem 0.5rem;">
-                        {{ $taskList->tasks->where('status','in_progress')->count() }}
-                    </span>
-                </div>
-                <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.6rem;min-height:120px;">
-                    @forelse($taskList->tasks->where('status','in_progress') as $task)
-                        @include('task-lists._task-card', ['task' => $task])
-                    @empty
-                        <div style="padding:1.5rem 0;text-align:center;">
-                            <span style="font-size:0.75rem;color:rgba(141,144,162,0.5);">No tasks here</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Review -->
-            <div style="background:rgba(19,27,46,0.9);border:1px solid rgba(67,70,86,0.25);border-radius:1rem;overflow:hidden;">
-                <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(67,70,86,0.2);display:flex;align-items:center;gap:0.6rem;">
-                    <div style="width:8px;height:8px;border-radius:9999px;background:#7c3aed;"></div>
-                    <span style="font-family:'Manrope',sans-serif;font-size:0.78rem;font-weight:700;color:#b7c8e1;text-transform:uppercase;letter-spacing:0.1em;">Review</span>
-                    <span style="margin-left:auto;font-size:0.7rem;color:#8d90a2;background:rgba(67,70,86,0.3);border-radius:9999px;padding:0.1rem 0.5rem;">
-                        {{ $taskList->tasks->where('status','review')->count() }}
-                    </span>
-                </div>
-                <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.6rem;min-height:120px;">
-                    @forelse($taskList->tasks->where('status','review') as $task)
-                        @include('task-lists._task-card', ['task' => $task])
-                    @empty
-                        <div style="padding:1.5rem 0;text-align:center;">
-                            <span style="font-size:0.75rem;color:rgba(141,144,162,0.5);">No tasks here</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Done -->
-            <div style="background:rgba(19,27,46,0.9);border:1px solid rgba(67,70,86,0.25);border-radius:1rem;overflow:hidden;">
-                <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(67,70,86,0.2);display:flex;align-items:center;gap:0.6rem;">
-                    <div style="width:8px;height:8px;border-radius:9999px;background:#059669;"></div>
-                    <span style="font-family:'Manrope',sans-serif;font-size:0.78rem;font-weight:700;color:#b7c8e1;text-transform:uppercase;letter-spacing:0.1em;">Done</span>
-                    <span style="margin-left:auto;font-size:0.7rem;color:#8d90a2;background:rgba(67,70,86,0.3);border-radius:9999px;padding:0.1rem 0.5rem;">
-                        {{ $taskList->tasks->where('status','done')->count() }}
-                    </span>
-                </div>
-                <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.6rem;min-height:120px;">
-                    @forelse($taskList->tasks->where('status','done') as $task)
-                        @include('task-lists._task-card', ['task' => $task])
-                    @empty
-                        <div style="padding:1.5rem 0;text-align:center;">
-                            <span style="font-size:0.75rem;color:rgba(141,144,162,0.5);">No tasks here</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Livewire components (task board / detail panel) -->
-        <div style="margin-top:2rem;">
-            <livewire:tasks.task-board :task-list="$taskList" />
-            <livewire:tasks.task-detail />
-        </div>
+        <!--
+            Kanban board (search + drag/drop board + detail drawer).
+            A second, statically-rendered board used to live here, looping
+            $taskList->tasks and @include-ing "task-lists._task-card" — a
+            partial that doesn't exist in this repo, so that markup threw a
+            ViewNotFoundException the moment any column had a task, and it
+            fully duplicated what <livewire:tasks.task-board> already does
+            correctly. Removed rather than fixed, since the Livewire board is
+            the real, interactive implementation.
+        -->
+        <livewire:tasks.task-board :task-list="$taskList" />
+        <livewire:tasks.task-detail />
     </div>
 </x-app-layout>

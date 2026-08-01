@@ -11,6 +11,8 @@ class TaskBoard extends Component
 {
     public TaskList $taskList;
 
+    public string $search = '';
+
     public const COLUMNS = [
         'todo'        => 'To Do',
         'in_progress' => 'In Progress',
@@ -20,7 +22,14 @@ class TaskBoard extends Component
 
     public function mount(TaskList $taskList): void
     {
+        $this->authorize('view', $taskList);
+
         $this->taskList = $taskList;
+    }
+
+    public function updatedSearch(): void
+    {
+        unset($this->tasksByStatus);
     }
 
     #[Computed]
@@ -28,6 +37,12 @@ class TaskBoard extends Component
     {
         $tasks = $this->taskList->tasks()
             ->whereNull('parent_id')
+            ->when($this->search !== '', function ($query) {
+                $query->where(function ($q) {
+                    $q->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                });
+            })
             ->with(['assignee', 'labels', 'subtasks'])
             ->orderBy('sort_order')
             ->get()
@@ -43,6 +58,8 @@ class TaskBoard extends Component
 
     public function moveTask(int $taskId, string $newStatus): void
     {
+        $this->authorize('update', $this->taskList);
+
         $task = Task::findOrFail($taskId);
         abort_unless($task->task_list_id === $this->taskList->id, 403);
 

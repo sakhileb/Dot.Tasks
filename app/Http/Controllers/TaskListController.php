@@ -30,10 +30,7 @@ class TaskListController extends Controller
 
     public function show(Request $request, TaskList $taskList): \Illuminate\View\View
     {
-        abort_unless(
-            $request->user()->currentTeam->id === $taskList->team_id,
-            403
-        );
+        $this->authorize('view', $taskList);
 
         $labels = Label::where('team_id', $taskList->team_id)->get();
 

@@ -35,6 +35,18 @@
                     @endif
                 </div>
 
+                {{-- Assignee --}}
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Assignee</label>
+                    <select wire:change="assignTask($event.target.value ? $event.target.value : null)"
+                            class="text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        <option value="">Unassigned</option>
+                        @foreach($this->assignableUsers as $member)
+                            <option value="{{ $member->id }}" @selected($task->assignee_id === $member->id)>{{ $member->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 {{-- Description --}}
                 @if($task->description)
                     <div class="mb-5 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">

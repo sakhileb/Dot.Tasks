@@ -1,11 +1,27 @@
 <div>
-    <div class="flex justify-end mb-4">
+    <div class="flex items-center gap-3 mb-4">
+        <div class="relative flex-1 max-w-xs">
+            <span class="material-symbols-rounded absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" style="font-size:16px;">search</span>
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search tasks..."
+                   class="w-full pl-8 pr-3 py-2 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-indigo-500 focus:border-indigo-500" />
+        </div>
         <button wire:click="$dispatch('open-create-task', { status: 'todo' })"
-                class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                class="ml-auto inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
             + Add Task
         </button>
     </div>
 
+    @if(collect($this->tasksByStatus)->every(fn ($c) => $c->isEmpty()))
+        <div class="text-center py-16 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+            @if($search !== '')
+                <span class="material-symbols-rounded text-gray-400 dark:text-gray-600" style="font-size:32px;">search_off</span>
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No tasks match "{{ $search }}".</p>
+            @else
+                <span class="material-symbols-rounded text-gray-400 dark:text-gray-600" style="font-size:32px;">task_alt</span>
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No tasks yet. Add your first task to get started.</p>
+            @endif
+        </div>
+    @else
     <div class="flex gap-4 overflow-x-auto pb-4">
         @foreach(\App\Livewire\Tasks\TaskBoard::COLUMNS as $status => $label)
             <div class="shrink-0 w-72 bg-gray-100 dark:bg-gray-900 rounded-xl p-3"
@@ -21,7 +37,7 @@
                 </div>
 
                 <div class="space-y-2 min-h-8">
-                    @foreach($this->tasksByStatus[$status] as $task)
+                    @forelse($this->tasksByStatus[$status] as $task)
                         <div class="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer group"
                              draggable="true"
                              x-on:dragstart="$event.dataTransfer.setData('taskId', '{{ $task->id }}')"
@@ -39,16 +55,27 @@
                                     {{ ucfirst($task->priority) }}
                                 </span>
                                 @if($task->due_date)
-                                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ $task->due_date->format('M j') }}</span>
+                                    <span class="text-xs {{ $task->due_date->isPast() && $task->status !== 'done' ? 'text-red-500 font-semibold' : 'text-gray-400 dark:text-gray-500' }}">{{ $task->due_date->format('M j') }}</span>
                                 @endif
                             </div>
-                            @if($task->subtasks->isNotEmpty())
-                                <p class="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
-                                    {{ $task->subtasks->where('status', 'done')->count() }}/{{ $task->subtasks->count() }} subtasks
-                                </p>
-                            @endif
+                            <div class="flex items-center justify-between mt-1.5">
+                                @if($task->subtasks->isNotEmpty())
+                                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                                        {{ $task->subtasks->where('status', 'done')->count() }}/{{ $task->subtasks->count() }} subtasks
+                                    </p>
+                                @else
+                                    <span></span>
+                                @endif
+                                @if($task->assignee)
+                                    <span title="{{ $task->assignee->name }}" class="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 text-[10px] font-semibold">
+                                        {{ strtoupper(substr($task->assignee->name, 0, 1)) }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <p class="text-xs text-gray-400 dark:text-gray-600 text-center py-4">No tasks here.</p>
+                    @endforelse
                 </div>
 
                 <button wire:click="$dispatch('open-create-task', { status: '{{ $status }}' })"
@@ -58,6 +85,7 @@
             </div>
         @endforeach
     </div>
+    @endif
 
     <livewire:tasks.create-task :task-list="$taskList" />
 </div>
