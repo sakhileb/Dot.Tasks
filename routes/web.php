@@ -18,7 +18,17 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
+        // A user removed from their last team (or who never completed team
+        // setup) reaches this route with currentTeam genuinely null — the
+        // auth:sanctum/verified middleware group above only checks that the
+        // user is authenticated, not that they belong to a team. Without
+        // this guard, $team->taskLists() below throws "Attempt to read
+        // property 'id' on null".
         $team = auth()->user()->currentTeam;
+
+        if (! $team) {
+            return redirect()->route('teams.create');
+        }
 
         $lists = $team
             ->taskLists()

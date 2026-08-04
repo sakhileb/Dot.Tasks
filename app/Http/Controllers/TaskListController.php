@@ -11,6 +11,14 @@ class TaskListController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
+        // A user removed from their last team (or who never completed team
+        // setup) can still reach this action — auth:sanctum/verified only
+        // requires authentication, not team membership — so currentTeam can
+        // genuinely be null here. Guard before dereferencing ->id, mirroring
+        // the ecosystem-wide "Attempt to read property 'id' on null" fix.
+        $team = $request->user()->currentTeam;
+        abort_if(! $team, 403, 'You must belong to a team to create a task list.');
+
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -18,7 +26,7 @@ class TaskListController extends Controller
         ]);
 
         $list = TaskList::create([
-            'team_id'     => $request->user()->currentTeam->id,
+            'team_id'     => $team->id,
             'owner_id'    => $request->user()->id,
             'name'        => $validated['name'],
             'description' => $validated['description'] ?? null,
