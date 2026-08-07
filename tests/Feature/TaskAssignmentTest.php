@@ -24,9 +24,9 @@ class TaskAssignmentTest extends TestCase
         $owner->currentTeam->users()->attach($teammate, ['role' => 'editor']);
 
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Ship the feature', 'status' => 'todo']);
 
@@ -50,9 +50,9 @@ class TaskAssignmentTest extends TestCase
         $outsider = User::factory()->withPersonalTeam()->create();
 
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Ship the feature', 'status' => 'todo']);
 

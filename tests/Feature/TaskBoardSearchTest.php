@@ -17,9 +17,9 @@ class TaskBoardSearchTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $taskList->tasks()->create(['title' => 'Write the launch email', 'status' => 'todo']);
         $taskList->tasks()->create(['title' => 'Fix the login bug', 'status' => 'todo']);
@@ -37,9 +37,9 @@ class TaskBoardSearchTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $taskList->tasks()->create(['title' => 'Write the launch email', 'status' => 'todo']);
 

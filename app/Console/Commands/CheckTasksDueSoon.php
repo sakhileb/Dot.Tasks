@@ -22,7 +22,7 @@ class CheckTasksDueSoon extends Command
 
     public function handle(): int
     {
-        $windowEnd   = Carbon::today()->addDays(2)->toDateString();
+        $windowEnd = Carbon::today()->addDays(2)->toDateString();
         $windowStart = Carbon::today()->toDateString();
 
         $tasks = Task::query()

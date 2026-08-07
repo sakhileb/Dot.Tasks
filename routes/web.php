@@ -4,8 +4,8 @@ use App\Http\Controllers\Auth\EcosystemAuthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskListController;
 use App\Models\Task;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Jetstream;
 
@@ -51,11 +51,11 @@ Route::middleware([
         $teamTasks = fn () => Task::whereHas('taskList', fn ($q) => $q->where('team_id', $team->id));
 
         $taskCounts = [
-            'todo'         => $teamTasks()->where('status', 'todo')->count(),
-            'in_progress'  => $teamTasks()->where('status', 'in_progress')->count(),
-            'done'         => $teamTasks()->where('status', 'done')->count(),
-            'due_today'    => $teamTasks()->whereDate('due_date', Carbon::today())->where('status', '!=', 'done')->count(),
-            'overdue'      => $teamTasks()->whereDate('due_date', '<', Carbon::today())->where('status', '!=', 'done')->count(),
+            'todo' => $teamTasks()->where('status', 'todo')->count(),
+            'in_progress' => $teamTasks()->where('status', 'in_progress')->count(),
+            'done' => $teamTasks()->where('status', 'done')->count(),
+            'due_today' => $teamTasks()->whereDate('due_date', Carbon::today())->where('status', '!=', 'done')->count(),
+            'overdue' => $teamTasks()->whereDate('due_date', '<', Carbon::today())->where('status', '!=', 'done')->count(),
             'completed_week' => $teamTasks()->where('status', 'done')->where('updated_at', '>=', Carbon::now()->startOfWeek())->count(),
         ];
 

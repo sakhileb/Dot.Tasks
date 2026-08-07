@@ -28,9 +28,9 @@ class NotificationBellTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Task', 'status' => 'todo']);
 
@@ -52,9 +52,9 @@ class NotificationBellTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Task', 'status' => 'todo']);
 
@@ -71,9 +71,9 @@ class NotificationBellTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Task', 'status' => 'todo']);
 

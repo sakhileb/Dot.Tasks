@@ -12,9 +12,7 @@ use Illuminate\Notifications\Notification;
  */
 class TaskDueSoonNotification extends Notification
 {
-    public function __construct(public Task $task)
-    {
-    }
+    public function __construct(public Task $task) {}
 
     /**
      * @return array<int, string>
@@ -32,12 +30,12 @@ class TaskDueSoonNotification extends Notification
         $taskList = $this->task->taskList;
 
         return [
-            'type'         => 'task_due_soon',
-            'title'        => 'Task due soon',
-            'message'      => "\"{$this->task->title}\" on \"{$taskList->name}\" is due " . $this->task->due_date->format('M d, Y') . '.',
+            'type' => 'task_due_soon',
+            'title' => 'Task due soon',
+            'message' => "\"{$this->task->title}\" on \"{$taskList->name}\" is due ".$this->task->due_date->format('M d, Y').'.',
             'task_list_id' => $taskList->id,
-            'task_id'      => $this->task->id,
-            'url'          => route('task-lists.show', $taskList),
+            'task_id' => $this->task->id,
+            'url' => route('task-lists.show', $taskList),
         ];
     }
 }

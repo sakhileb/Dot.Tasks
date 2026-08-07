@@ -4,6 +4,7 @@ namespace App\Livewire\Tasks;
 
 use App\Models\Task;
 use App\Models\TaskList;
+use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -42,7 +43,7 @@ class CreateTask extends Component
     #[On('open-create-task')]
     public function open(string $status = 'todo'): void
     {
-        $this->status   = $status;
+        $this->status = $status;
         $this->showForm = true;
     }
 
@@ -55,14 +56,14 @@ class CreateTask extends Component
             ->max('sort_order') ?? -1;
 
         Task::create([
-            'task_list_id'      => $this->taskList->id,
-            'title'             => $this->title,
-            'description'       => $this->description ?: null,
-            'status'            => $this->status,
-            'priority'          => $this->priority,
-            'due_date'          => $this->dueDate ?: null,
+            'task_list_id' => $this->taskList->id,
+            'title' => $this->title,
+            'description' => $this->description ?: null,
+            'status' => $this->status,
+            'priority' => $this->priority,
+            'due_date' => $this->dueDate ?: null,
             'estimated_minutes' => $this->estimatedMinutes,
-            'sort_order'        => $maxOrder + 1,
+            'sort_order' => $maxOrder + 1,
         ]);
 
         $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes']);
@@ -76,7 +77,7 @@ class CreateTask extends Component
         $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes']);
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.tasks.create-task');
     }

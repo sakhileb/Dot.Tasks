@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\NewCommentNotification;
 use App\Notifications\TaskAssignedNotification;
 use App\Services\AiTaskBreakdownService;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -21,6 +22,7 @@ class TaskDetail extends Component
     public string $commentBody = '';
 
     public bool $breaking = false;
+
     public ?string $aiError = null;
 
     /**
@@ -36,10 +38,10 @@ class TaskDetail extends Component
         $task = Task::with(['assignee', 'labels', 'subtasks', 'comments.user', 'taskList.team'])->findOrFail($taskId);
         $this->authorize('view', $task);
 
-        $this->task        = $task;
-        $this->aiError      = null;
-        $this->breaking     = false;
-        $this->commentBody  = '';
+        $this->task = $task;
+        $this->aiError = null;
+        $this->breaking = false;
+        $this->commentBody = '';
     }
 
     public function close(): void
@@ -117,7 +119,7 @@ class TaskDetail extends Component
         TaskComment::create([
             'task_id' => $this->task->id,
             'user_id' => auth()->id(),
-            'body'    => $this->commentBody,
+            'body' => $this->commentBody,
         ]);
 
         if ($this->task->assignee_id && $this->task->assignee_id !== auth()->id()) {
@@ -137,34 +139,35 @@ class TaskDetail extends Component
         $this->authorize('update', $this->task);
 
         $this->breaking = true;
-        $this->aiError  = null;
+        $this->aiError = null;
 
         $service = app(AiTaskBreakdownService::class);
-        $result  = $service->breakdown($this->task, auth()->id());
+        $result = $service->breakdown($this->task, auth()->id());
 
         if ($result === null) {
-            $this->aiError  = 'AI breakdown failed. Please try again.';
+            $this->aiError = 'AI breakdown failed. Please try again.';
             $this->breaking = false;
+
             return;
         }
 
         foreach ($result['subtasks'] ?? [] as $i => $sub) {
             Task::create([
-                'task_list_id'      => $this->task->task_list_id,
-                'parent_id'         => $this->task->id,
-                'title'             => $sub['title'],
-                'priority'          => $sub['priority'] ?? 'medium',
+                'task_list_id' => $this->task->task_list_id,
+                'parent_id' => $this->task->id,
+                'title' => $sub['title'],
+                'priority' => $sub['priority'] ?? 'medium',
                 'estimated_minutes' => $sub['estimated_minutes'] ?? null,
-                'status'            => 'todo',
-                'sort_order'        => $i,
+                'status' => 'todo',
+                'sort_order' => $i,
             ]);
         }
 
         $this->breaking = false;
-        $this->task     = $this->task->fresh(['assignee', 'labels', 'subtasks', 'comments.user', 'taskList.team']);
+        $this->task = $this->task->fresh(['assignee', 'labels', 'subtasks', 'comments.user', 'taskList.team']);
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.tasks.task-detail');
     }

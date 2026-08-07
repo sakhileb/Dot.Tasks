@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\TaskList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TaskListController extends Controller
 {
@@ -20,23 +21,23 @@ class TaskListController extends Controller
         abort_if(! $team, 403, 'You must belong to a team to create a task list.');
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'color'       => 'nullable|string|max:7',
+            'color' => 'nullable|string|max:7',
         ]);
 
         $list = TaskList::create([
-            'team_id'     => $team->id,
-            'owner_id'    => $request->user()->id,
-            'name'        => $validated['name'],
+            'team_id' => $team->id,
+            'owner_id' => $request->user()->id,
+            'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
-            'color'       => $validated['color'] ?? '#6366f1',
+            'color' => $validated['color'] ?? '#6366f1',
         ]);
 
         return redirect()->route('task-lists.show', $list);
     }
 
-    public function show(Request $request, TaskList $taskList): \Illuminate\View\View
+    public function show(Request $request, TaskList $taskList): View
     {
         $this->authorize('view', $taskList);
 

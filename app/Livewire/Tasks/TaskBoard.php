@@ -4,6 +4,7 @@ namespace App\Livewire\Tasks;
 
 use App\Models\Task;
 use App\Models\TaskList;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -14,10 +15,10 @@ class TaskBoard extends Component
     public string $search = '';
 
     public const COLUMNS = [
-        'todo'        => 'To Do',
+        'todo' => 'To Do',
         'in_progress' => 'In Progress',
-        'review'      => 'Review',
-        'done'        => 'Done',
+        'review' => 'Review',
+        'done' => 'Done',
     ];
 
     public function mount(TaskList $taskList): void
@@ -39,8 +40,8 @@ class TaskBoard extends Component
             ->whereNull('parent_id')
             ->when($this->search !== '', function ($query) {
                 $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
             ->with(['assignee', 'labels', 'subtasks'])
@@ -67,7 +68,7 @@ class TaskBoard extends Component
         unset($this->tasksByStatus);
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.tasks.task-board');
     }

@@ -19,9 +19,9 @@ class TaskAuthorizationTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Sprint Board',
+            'name' => 'Sprint Board',
         ]);
 
         $this->actingAs($owner)
@@ -34,9 +34,9 @@ class TaskAuthorizationTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Private Board',
+            'name' => 'Private Board',
         ]);
 
         $outsider = User::factory()->withPersonalTeam()->create();
@@ -50,12 +50,12 @@ class TaskAuthorizationTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Protected Board',
+            'name' => 'Protected Board',
         ]);
         $task = $taskList->tasks()->create([
-            'title'  => 'Do the thing',
+            'title' => 'Do the thing',
             'status' => 'todo',
         ]);
 
@@ -77,12 +77,12 @@ class TaskAuthorizationTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Owner Board',
+            'name' => 'Owner Board',
         ]);
         $task = $taskList->tasks()->create([
-            'title'  => 'Confidential task',
+            'title' => 'Confidential task',
             'status' => 'todo',
         ]);
 
@@ -98,12 +98,12 @@ class TaskAuthorizationTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Owner Board',
+            'name' => 'Owner Board',
         ]);
         $task = $taskList->tasks()->create([
-            'title'  => 'Visible task',
+            'title' => 'Visible task',
             'status' => 'todo',
         ]);
 

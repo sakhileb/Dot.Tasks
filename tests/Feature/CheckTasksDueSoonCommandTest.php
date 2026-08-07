@@ -23,15 +23,15 @@ class CheckTasksDueSoonCommandTest extends TestCase
         $owner->currentTeam->users()->attach($assignee, ['role' => 'editor']);
 
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create([
-            'title'       => 'Due soon task',
-            'status'      => 'todo',
+            'title' => 'Due soon task',
+            'status' => 'todo',
             'assignee_id' => $assignee->id,
-            'due_date'    => now()->addDay(),
+            'due_date' => now()->addDay(),
         ]);
 
         $this->artisan(CheckTasksDueSoon::class)->assertSuccessful();
@@ -50,15 +50,15 @@ class CheckTasksDueSoonCommandTest extends TestCase
         $owner->currentTeam->users()->attach($assignee, ['role' => 'editor']);
 
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $taskList->tasks()->create([
-            'title'       => 'Already done',
-            'status'      => 'done',
+            'title' => 'Already done',
+            'status' => 'done',
             'assignee_id' => $assignee->id,
-            'due_date'    => now()->addDay(),
+            'due_date' => now()->addDay(),
         ]);
 
         $this->artisan(CheckTasksDueSoon::class)->assertSuccessful();
@@ -73,15 +73,15 @@ class CheckTasksDueSoonCommandTest extends TestCase
         $owner->currentTeam->users()->attach($assignee, ['role' => 'editor']);
 
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create([
-            'title'       => 'Due soon task',
-            'status'      => 'todo',
+            'title' => 'Due soon task',
+            'status' => 'todo',
             'assignee_id' => $assignee->id,
-            'due_date'    => now()->addDay(),
+            'due_date' => now()->addDay(),
         ]);
 
         $this->artisan(CheckTasksDueSoon::class)->assertSuccessful();

@@ -12,9 +12,7 @@ use Illuminate\Notifications\Notification;
  */
 class TaskAssignedNotification extends Notification
 {
-    public function __construct(public Task $task)
-    {
-    }
+    public function __construct(public Task $task) {}
 
     /**
      * @return array<int, string>
@@ -32,12 +30,12 @@ class TaskAssignedNotification extends Notification
         $taskList = $this->task->taskList;
 
         return [
-            'type'         => 'task_assigned',
-            'title'        => 'Task assigned to you',
-            'message'      => "You were assigned \"{$this->task->title}\" on \"{$taskList->name}\".",
+            'type' => 'task_assigned',
+            'title' => 'Task assigned to you',
+            'message' => "You were assigned \"{$this->task->title}\" on \"{$taskList->name}\".",
             'task_list_id' => $taskList->id,
-            'task_id'      => $this->task->id,
-            'url'          => route('task-lists.show', $taskList),
+            'task_id' => $this->task->id,
+            'url' => route('task-lists.show', $taskList),
         ];
     }
 }

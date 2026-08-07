@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Livewire\Tasks\CreateTask;
 use App\Livewire\Tasks\TaskDetail;
-use App\Models\AiBreakdownLog;
 use App\Models\TaskList;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,9 +18,9 @@ class TaskCrudAndAiBreakdownTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
 
         Livewire::actingAs($owner)
@@ -32,8 +31,8 @@ class TaskCrudAndAiBreakdownTest extends TestCase
 
         $this->assertDatabaseHas('tasks', [
             'task_list_id' => $taskList->id,
-            'title'        => 'Write the release notes',
-            'priority'     => 'high',
+            'title' => 'Write the release notes',
+            'priority' => 'high',
         ]);
     }
 
@@ -41,9 +40,9 @@ class TaskCrudAndAiBreakdownTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
 
         $outsider = User::factory()->withPersonalTeam()->create();
@@ -62,9 +61,9 @@ class TaskCrudAndAiBreakdownTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Launch the feature', 'status' => 'todo']);
 
@@ -81,9 +80,9 @@ class TaskCrudAndAiBreakdownTest extends TestCase
     {
         $owner = User::factory()->withPersonalTeam()->create();
         $taskList = TaskList::create([
-            'team_id'  => $owner->currentTeam->id,
+            'team_id' => $owner->currentTeam->id,
             'owner_id' => $owner->id,
-            'name'     => 'Board',
+            'name' => 'Board',
         ]);
         $task = $taskList->tasks()->create(['title' => 'Confidential', 'status' => 'todo']);
 
