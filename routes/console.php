@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 // Dot.Tasks scheduled tasks
 Schedule::command('tasks:check-due-soon')->dailyAt('07:00');
+Schedule::command('tasks:detect-escalation-candidates')->dailyAt('07:30');

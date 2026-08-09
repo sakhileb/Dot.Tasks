@@ -27,4 +27,15 @@ class TaskPolicy
     {
         return $user->belongsToTeam($task->taskList->team);
     }
+
+    /**
+     * Determine whether the user can review an escalation proposal for the
+     * task (approve or reject). Narrower than update() -- any team member
+     * can edit a task, but only the task list's owner may decide whether an
+     * overdue task actually gets escalated.
+     */
+    public function escalate(User $user, Task $task): bool
+    {
+        return $user->id === $task->taskList->owner_id;
+    }
 }
