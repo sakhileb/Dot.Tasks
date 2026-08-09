@@ -67,4 +67,6 @@ Route::middleware([
     Route::get('/lists/{taskList}', [TaskListController::class, 'show'])->name('task-lists.show');
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::get('/escalations', fn () => view('escalations.index'))->name('escalations.index');
 });

@@ -12,11 +12,12 @@ class Task extends Model
     protected $fillable = [
         'task_list_id', 'assignee_id', 'parent_id',
         'title', 'description', 'status', 'priority', 'due_date',
-        'estimated_minutes', 'sort_order',
+        'estimated_minutes', 'sort_order', 'escalated_at',
     ];
 
     protected $casts = [
         'due_date' => 'date',
+        'escalated_at' => 'datetime',
     ];
 
     public function taskList(): BelongsTo

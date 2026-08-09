@@ -16,16 +16,20 @@
             </div>
         </div>
 
-        <!--
+        {{--
             Kanban board (search + drag/drop board + detail drawer).
             A second, statically-rendered board used to live here, looping
-            $taskList->tasks and @include-ing "task-lists._task-card" — a
+            over the list's tasks and including a "task-lists._task-card"
             partial that doesn't exist in this repo, so that markup threw a
             ViewNotFoundException the moment any column had a task, and it
             fully duplicated what <livewire:tasks.task-board> already does
             correctly. Removed rather than fixed, since the Livewire board is
-            the real, interactive implementation.
-        -->
+            the real, interactive implementation. This block must stay a
+            genuine Blade comment (not a plain HTML one) -- an HTML comment
+            doesn't stop Blade from still compiling directive-looking text
+            inside it, which is exactly what silently broke this file until
+            a stale compiled-view cache finally got cleared.
+        --}}
         <livewire:tasks.task-board :task-list="$taskList" />
         <livewire:tasks.task-detail />
     </div>
