@@ -62,6 +62,9 @@ Route::middleware([
         return view('dashboard', compact('lists', 'taskCounts'));
     })->name('dashboard');
 
+    Route::get('/today', fn () => view('tasks.today'))->name('tasks.today');
+    Route::get('/upcoming', fn () => view('tasks.upcoming'))->name('tasks.upcoming');
+
     Route::get('/lists/create', fn () => view('task-lists.create'))->name('task-lists.create');
     Route::post('/lists', [TaskListController::class, 'store'])->name('task-lists.store');
     Route::get('/lists/{taskList}', [TaskListController::class, 'show'])->name('task-lists.show');

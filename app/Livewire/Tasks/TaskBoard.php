@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Tasks;
 
+use App\Events\TaskBoardUpdated;
 use App\Models\Task;
 use App\Models\TaskList;
+use App\Services\TaskRecurrenceService;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -65,6 +67,22 @@ class TaskBoard extends Component
         abort_unless($task->task_list_id === $this->taskList->id, 403);
 
         $task->update(['status' => $newStatus]);
+
+        if ($newStatus === 'done') {
+            app(TaskRecurrenceService::class)->spawnNextOccurrence($task);
+        }
+
+        broadcast(new TaskBoardUpdated($this->taskList))->toOthers();
+        unset($this->tasksByStatus);
+    }
+
+    /**
+     * Called from the board view's Echo listener when another viewer's
+     * action broadcasts a TaskBoardUpdated event -- just invalidates the
+     * cached computed property so the next render re-fetches current state.
+     */
+    public function refreshBoard(): void
+    {
         unset($this->tasksByStatus);
     }
 

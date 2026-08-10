@@ -31,6 +31,15 @@ class CreateTask extends Component
     #[Validate('nullable|integer|min:1')]
     public ?int $estimatedMinutes = null;
 
+    #[Validate('nullable|in:daily,weekly,monthly,custom_days')]
+    public string $recurrenceType = '';
+
+    #[Validate('required_with:recurrenceType|integer|min:1|max:365')]
+    public int $recurrenceInterval = 1;
+
+    #[Validate('required_with:recurrenceType|in:due_date,completion')]
+    public string $recurrenceAnchor = 'due_date';
+
     public bool $showForm = false;
 
     public function mount(TaskList $taskList): void
@@ -64,9 +73,12 @@ class CreateTask extends Component
             'due_date' => $this->dueDate ?: null,
             'estimated_minutes' => $this->estimatedMinutes,
             'sort_order' => $maxOrder + 1,
+            'recurrence_type' => $this->recurrenceType ?: null,
+            'recurrence_interval' => $this->recurrenceInterval,
+            'recurrence_anchor' => $this->recurrenceAnchor,
         ]);
 
-        $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes']);
+        $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes', 'recurrenceType', 'recurrenceInterval', 'recurrenceAnchor']);
         $this->showForm = false;
         $this->dispatch('task-created');
     }
@@ -74,7 +86,7 @@ class CreateTask extends Component
     public function cancel(): void
     {
         $this->showForm = false;
-        $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes']);
+        $this->reset(['title', 'description', 'dueDate', 'estimatedMinutes', 'recurrenceType', 'recurrenceInterval', 'recurrenceAnchor']);
     }
 
     public function render(): View

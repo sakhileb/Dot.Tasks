@@ -42,7 +42,12 @@
                              draggable="true"
                              x-on:dragstart="$event.dataTransfer.setData('taskId', '{{ $task->id }}')"
                              wire:click="$dispatch('open-task', { taskId: {{ $task->id }} })">
-                            <p class="text-sm text-gray-900 dark:text-white font-medium mb-2">{{ $task->title }}</p>
+                            <p class="text-sm text-gray-900 dark:text-white font-medium mb-2">
+                                {{ $task->title }}
+                                @if($task->isRecurring())
+                                    <span title="Repeats {{ $task->recurrence_type === 'custom_days' ? 'every '.$task->recurrence_interval.' days' : $task->recurrence_type }}">🔁</span>
+                                @endif
+                            </p>
                             <div class="flex items-center justify-between">
                                 <span class="text-xs px-1.5 py-0.5 rounded
                                     {{ match($task->priority) {
@@ -88,4 +93,17 @@
     @endif
 
     <livewire:tasks.create-task :task-list="$taskList" />
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            if (! window.Echo) {
+                return; // BROADCAST_CONNECTION isn't reverb (e.g. local "log"/tests) -- nothing to subscribe to.
+            }
+
+            window.Echo.private(`task-list.{{ $taskList->id }}`)
+                .listen('.board.updated', () => {
+                    $wire.call('refreshBoard');
+                });
+        });
+    </script>
 </div>

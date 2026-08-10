@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Tasks;
 
+use App\Events\TaskBoardUpdated;
 use App\Models\Task;
 use App\Models\TaskComment;
 use App\Models\User;
 use App\Notifications\NewCommentNotification;
 use App\Notifications\TaskAssignedNotification;
 use App\Services\AiTaskBreakdownService;
+use App\Services\TaskRecurrenceService;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -76,6 +78,12 @@ class TaskDetail extends Component
         $this->authorize('update', $this->task);
 
         $this->task->update(['status' => $status]);
+
+        if ($status === 'done') {
+            app(TaskRecurrenceService::class)->spawnNextOccurrence($this->task);
+        }
+
+        broadcast(new TaskBoardUpdated($this->task->taskList))->toOthers();
         $this->task = $this->task->fresh(['assignee', 'labels', 'subtasks', 'comments.user', 'taskList.team']);
         $this->dispatch('task-updated');
     }

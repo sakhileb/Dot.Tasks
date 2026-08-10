@@ -13,11 +13,13 @@ class Task extends Model
         'task_list_id', 'assignee_id', 'parent_id',
         'title', 'description', 'status', 'priority', 'due_date',
         'estimated_minutes', 'sort_order', 'escalated_at',
+        'recurrence_type', 'recurrence_interval', 'recurrence_anchor', 'recurrence_parent_id',
     ];
 
     protected $casts = [
         'due_date' => 'date',
         'escalated_at' => 'datetime',
+        'recurrence_interval' => 'integer',
     ];
 
     public function taskList(): BelongsTo
@@ -53,5 +55,22 @@ class Task extends Model
     public function aiBreakdownLogs(): HasMany
     {
         return $this->hasMany(AiBreakdownLog::class);
+    }
+
+    public function isRecurring(): bool
+    {
+        return $this->recurrence_type !== null;
+    }
+
+    /** The very first task in this recurring series -- itself, if this task has no parent occurrence. */
+    public function recurrenceParent(): BelongsTo
+    {
+        return $this->belongsTo(Task::class, 'recurrence_parent_id');
+    }
+
+    /** Every occurrence spawned from this task (only populated on the series' first task). */
+    public function recurrenceOccurrences(): HasMany
+    {
+        return $this->hasMany(Task::class, 'recurrence_parent_id');
     }
 }
