@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\EcosystemAuthController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RealtimeHealthController;
 use App\Http\Controllers\TaskListController;
 use App\Models\Task;
 use Illuminate\Support\Carbon;
@@ -11,6 +12,11 @@ use Laravel\Jetstream\Jetstream;
 
 Route::get('/auth/ecosystem', [EcosystemAuthController::class, 'handle'])
     ->name('ecosystem.auth');
+
+// Real-time infrastructure health check -- unauthenticated like Laravel's
+// own /up, for uptime monitors/load balancers.
+Route::get('/up/realtime', [RealtimeHealthController::class, 'check'])
+    ->name('health.realtime');
 
 Route::get('/', fn () => view('welcome'));
 
